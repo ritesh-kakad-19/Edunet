@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Game</title>
+  <style>
+    /* CSS for Quiz Game */
+    body {
+      background:linear-gradient(blue ,purple,skyblue);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+    }
+
+    .quiz-container {
+      background: transparent;
+      padding: 20px;
+      border: 2px solid black;
+      border-radius: 8px;
+      box-shadow: 10px 10px 10px rgba(17, 16, 16, 0.5);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .btn {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #007bff;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .btn.correct {
+      background: #28a745;
+    }
+
+    .btn.wrong {
+      background: #dc3545;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .next-btn {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Quiz Game</h1>
+    <div id="question-container">
+      <div id="question" style="font-size: 25px;">Question Text</div>
+      <div id="answer-buttons" class="btn-grid">
+        <button class="btn">Answer 1</button>
+        <button class="btn">Answer 2</button>
+        <button class="btn">Answer 3</button>
+        <button class="btn">Answer 4</button>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="next-btn" class="next-btn btn hide">Next</button>
+    </div>
+  </div>
+  <script>
+    // JavaScript for Quiz Game
+    const questions = [
+  {
+    question: "What is the largest planet in our solar system?",
+    answers: [
+      { text: "Earth", correct: false },
+      { text: "Jupiter", correct: true },
+      { text: "Saturn", correct: false },
+      { text: "Mars", correct: false },
+    ],
+  },
+  {
+    question: "Which country is known as the Land of the Rising Sun?",
+    answers: [
+      { text: "China", correct: false },
+      { text: "Japan", correct: true },
+      { text: "South Korea", correct: false },
+      { text: "India", correct: false },
+    ],
+  },
+  {
+    question: "What is the hardest natural substance on Earth?",
+    answers: [
+      { text: "Gold", correct: false },
+      { text: "Iron", correct: false },
+      { text: "Diamond", correct: true },
+      { text: "Platinum", correct: false },
+    ],
+  },
+  {
+    question: "Who painted the Mona Lisa?",
+    answers: [
+      { text: "Vincent van Gogh", correct: false },
+      { text: "Leonardo da Vinci", correct: true },
+      { text: "Pablo Picasso", correct: false },
+      { text: "Claude Monet", correct: false },
+    ],
+  },
+  {
+    question: "Which is the longest river in the world?",
+    answers: [
+      { text: "Amazon River", correct: true },
+      { text: "Nile River", correct: false },
+      { text: "Yangtze River", correct: false },
+      { text: "Mississippi River", correct: false },
+    ],
+  },
+  {
+    question: "Who wrote the Harry Potter series?",
+    answers: [
+      { text: "J.R.R. Tolkien", correct: false },
+      { text: "J.K. Rowling", correct: true },
+      { text: "George R.R. Martin", correct: false },
+      { text: "Suzanne Collins", correct: false },
+    ],
+  },
+  {
+    question: "What is the capital of Australia?",
+    answers: [
+      { text: "Sydney", correct: false },
+      { text: "Melbourne", correct: false },
+      { text: "Canberra", correct: true },
+      { text: "Brisbane", correct: false },
+    ],
+  },
+  {
+    question: "Which element has the chemical symbol 'O'?",
+    answers: [
+      { text: "Oxygen", correct: true },
+      { text: "Gold", correct: false },
+      { text: "Silver", correct: false },
+      { text: "Hydrogen", correct: false },
+    ],
+  },
+  {
+    question: "Which year did World War II end?",
+    answers: [
+      { text: "1945", correct: true },
+      { text: "1939", correct: false },
+      { text: "1941", correct: false },
+      { text: "1950", correct: false },
+    ],
+  },
+  {
+    question: "What is the smallest country in the world?",
+    answers: [
+      { text: "Monaco", correct: false },
+      { text: "Vatican City", correct: true },
+      { text: "Maldives", correct: false },
+      { text: "Liechtenstein", correct: false },
+    ],
+  },
+];
+
+
+    const questionContainer = document.getElementById("question-container");
+    const questionElement = document.getElementById("question");
+    const answerButtonsElement = document.getElementById("answer-buttons");
+    const nextButton = document.getElementById("next-btn");
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      nextButton.classList.add("hide");
+      showQuestion();
+    }
+
+    function showQuestion() {
+      resetState();
+      const currentQuestion = questions[currentQuestionIndex];
+      questionElement.innerText = currentQuestion.question;
+      currentQuestion.answers.forEach((answer) => {
+        const button = document.createElement("button");
+        button.innerText = answer.text;
+        button.classList.add("btn");
+        if (answer.correct) {
+          button.dataset.correct = answer.correct;
+        }
+        button.addEventListener("click", selectAnswer);
+        answerButtonsElement.appendChild(button);
+      });
+    }
+
+    function resetState() {
+      nextButton.classList.add("hide");
+      while (answerButtonsElement.firstChild) {
+        answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+      }
+    }
+
+    function selectAnswer(e) {
+      const selectedButton = e.target;
+      const correct = selectedButton.dataset.correct === "true";
+      if (correct) score++;
+      Array.from(answerButtonsElement.children).forEach((button) => {
+        setStatusClass(button, button.dataset.correct === "true");
+      });
+      nextButton.classList.remove("hide");
+    }
+
+    function setStatusClass(element, correct) {
+      clearStatusClass(element);
+      if (correct) {
+        element.classList.add("correct");
+      } else {
+        element.classList.add("wrong");
+      }
+    }
+
+    function clearStatusClass(element) {
+      element.classList.remove("correct");
+      element.classList.remove("wrong");
+    }
+
+    nextButton.addEventListener("click", () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        alert(`Quiz finished! Your score is ${score}/${questions.length}`);
+        startQuiz();
+      }
+    });
+
+    startQuiz();
+  </script>
+</body>
+</html>
