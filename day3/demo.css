@@ -1,0 +1,20 @@
+body{
+    background-color:rgb(35, 35, 35) ;
+    color: aliceblue;
+}
+.relative
+{
+    height: 500px;
+    color: aqua;
+    font-size: 35px;
+}
+.div{
+    height: 200px;
+    width: 200px;
+    border: 2px solid blue;
+    background-color: aqua;
+    position: sticky;
+    top: 150px;
+   
+    
+}
