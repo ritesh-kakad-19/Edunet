@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Navbar with Icons</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #333;
+        padding: 10px 20px;
+      }
+
+      .navbar a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        padding: 8px 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px; /* Space between icon and text */
+        transition: color 0.3s ease;
+      }
+      .navbar a:hover {
+        color: #ff9800;
+      }
+
+      .navbar a i {
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="#"><i class="fas fa-home"></i> Home</a>
+      <a href="#"><i class="fas fa-info-circle"></i> About</a>
+      <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+      <a href="#"><i class="fas fa-user"></i> Profile</a>
+    </div>
+  </body>
+</html>
